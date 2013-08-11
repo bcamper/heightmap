@@ -269,7 +269,7 @@ Polygon.prototype.renderTexture = function ()
 	this.rasterize(['u', 'v']);
 
 	this.display.startFrameTimer();
-	for (y = this.ymin; y < this.ymax; y ++) {
+	for (y = this.ymin; y <= this.ymax; y ++) {
 		u = this.left_edge_properties.u[y];
 		udelta = this.row_property_deltas.u[y];
 
