@@ -13,6 +13,8 @@ function Polygon (vertices, options)
 	// this.tilt = 1;
 	// this.zoom = 1;
 
+	this.ymin = null;
+	this.ymax = null;
 	this.left_edges = new Int16Array(this.display.height);
 	this.right_edges = new Int16Array(this.display.height);
 
@@ -28,7 +30,10 @@ function Polygon (vertices, options)
 	}
 }
 
-// TODO: trace left and right edges in tandem to aid rasterization?
+
+/* Rasterization methods */
+
+// TODO: trace left and right edges in tandem?
 Polygon.prototype.traceEdges = function (transform, property_keys)
 {
 	var v, vtop, vtop_index = 0, vstart, vend;
@@ -102,16 +107,7 @@ Polygon.prototype.traceEdges = function (transform, property_keys)
 	return true;
 };
 
-Polygon.prototype.renderEdges = function (color)
-{
-	this.traceEdges(
-		function renderEdgesTraceEdges (p) {
-			this.display.pixels[p.y * this.display.width + p.x] = color;
-		}
-	);
-};
-
-// TODO: move rasterized info separate object/data structure from core polygon
+// TODO: move rasterized info separate object/data structure from core polygon?
 Polygon.prototype.rasterize = function (property_keys, transform, edge)
 {
 	var polygon = this;
@@ -222,6 +218,18 @@ Polygon.prototype.rasterize = function (property_keys, transform, edge)
 		transform.apply(this, args);
 	}
 	// this.display.endFrameTimer();
+};
+
+
+/* Rendering methods */
+
+Polygon.prototype.renderEdges = function (color)
+{
+	this.traceEdges(
+		function renderEdgesTraceEdges (p) {
+			this.display.pixels[p.y * this.display.width + p.x] = color;
+		}
+	);
 };
 
 Polygon.prototype.renderGradient = function ()
@@ -359,7 +367,11 @@ Polygon.prototype.renderHeightMap = function ()
 	this.display.endFrameTimer();
 };
 
+
+/* Factory methods */
+
 Polygon.Factory = {};
+
 Polygon.Factory.nSided = function (n, size, options)
 {
 	var options = options || {};
