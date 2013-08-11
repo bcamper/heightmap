@@ -8,6 +8,7 @@ function Polygon (vertices, options)
 
 	this.display = options.display || window.display;
 	this.vertices = vertices; // vertices must be clockwise
+	this.vertices_trans = new Array(this.vertices.length);
 	this.position = Point(0, 0);
 	this.rotation = 0;
 	// this.tilt = 1;
@@ -40,10 +41,6 @@ Polygon.prototype.traceEdges = function (transform, property_keys)
 		return false;
 	}
 
-	if (this.vertices_trans == null) {
-		this.vertices_trans = [];
-	}
-
 	// Find top vertex
 	for (v = 0; v < this.vertices.length; v ++) {
 		this.vertices_trans[v] = Point.rotate(this.vertices[v], this.rotation);
@@ -64,9 +61,9 @@ Polygon.prototype.traceEdges = function (transform, property_keys)
 		vstart = this.vertices[(v + vtop_index) % this.vertices.length];
 		vend = this.vertices[(v + vtop_index + 1) % this.vertices.length];
 
-		// line = new Line(Point.rotate(vstart, this.rotation), Point.rotate(vend, this.rotation));
-		// line = new Line(vstart, vend);
-		line = new Line(this.vertices_trans[(v + vtop_index) % this.vertices.length], this.vertices_trans[(v + vtop_index + 1) % this.vertices.length]);
+		line = new Line(
+			this.vertices_trans[(v + vtop_index) % this.vertices.length], 
+			this.vertices_trans[(v + vtop_index + 1) % this.vertices.length]);
 
 		// TODO: allow properties to be set via a provided function, to support different data structures
 		// property_keys[k](vstart, vend) -> returns [from, to]
@@ -265,7 +262,7 @@ Polygon.prototype.renderTexture = function ()
 	this.rasterize(['u', 'v']);
 
 	this.display.startFrameTimer();
-	for (y = this.ymin; y < this.ymax; y ++) {
+	for (y = this.ymin; y <= this.ymax; y ++) {
 		u = this.left_edge_properties.u[y];
 		udelta = this.row_property_deltas.u[y];
 
@@ -286,7 +283,6 @@ Polygon.prototype.renderTexture = function ()
 	}
 	this.display.endFrameTimer();
 };
-
 
 /* Factory methods */
 
