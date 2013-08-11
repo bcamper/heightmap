@@ -252,6 +252,12 @@ Polygon.prototype.renderGradient = function ()
 	);
 };
 
+Polygon.prototype.setTexture = function (image_data)
+{
+	this.texture = image_data;								// full ImageData reference
+	this.tex32 = new Uint32Array(this.texture.data.buffer); // 32-bit reference to data for faster access
+};
+
 Polygon.prototype.renderTexture = function ()
 {
 	var x, y, off;

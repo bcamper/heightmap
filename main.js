@@ -14,11 +14,9 @@ polygon.vertices.forEach(function (vertex, p) {
 
 // Load texture/heightmap and configured
 Display.loadImage('heightmap.png', function (img) { 
-	var palette, colors, bands, p, c;
+	var palette, p, c;
 
-	// TOOD: move to Polygon.setTexture function?
-	polygon.texture = Display.dataFromImage(img);
-	polygon.tex32 = new Uint32Array(polygon.texture.data.buffer);
+	polygon.setTexture(Display.dataFromImage(img));
 
 	palette = Display.makePaletteForGradients(
 		{
