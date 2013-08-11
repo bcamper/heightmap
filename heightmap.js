@@ -8,7 +8,10 @@ function HeightmapPolygon (vertices, options)
 {
 	Polygon.apply(this, arguments);
 
+	// Tracks the highest point rendered so far for each x value
 	this.xheights = new Int16Array(this.display.width);
+
+	// Resets x values each frame so that we only need to allocate the array once
 	this.xheights_empty = new Int16Array(this.display.width);
 	for (var i = 0; i < this.xheights_empty.length; i++) {
 		this.xheights_empty[i] = this.display.height;
@@ -35,11 +38,11 @@ HeightmapPolygon.prototype.renderHeightmap = function ()
 	}
 
 	this.display.startFrameTimer();
-	
-	this.rasterize(['u', 'v']);
 
+	this.rasterize(['u', 'v']);
 	this.xheights.set(this.xheights_empty);
 
+	// Render scanlines bottom to top, to minimize # of pixels drawn (no hidden terrain will be rendered)
 	for (y = this.ymax; y >= this.ymin; y --) {
 		u = this.left_edge_properties.u[y];
 		v = this.left_edge_properties.v[y];
@@ -61,9 +64,12 @@ HeightmapPolygon.prototype.renderHeightmap = function ()
 			right = width;
 		}
 
+		// Render scanline
 		for (x = left; x < right; x ++) {
+			// Get texture value - using ~~ integer typecast notation was faster than Math.round()
 			t = tex32[((~~v) << 8) + (~~u)]; // hard-coded for 256-width texture
 
+			// Determine how high this slice of terrain is
 			h = t >>> 24;
 			h = y - h;
 
@@ -71,10 +77,12 @@ HeightmapPolygon.prototype.renderHeightmap = function ()
 				h = 0;
 			}
 
+			// First slice for this x coord?
 			if (xheights[x] == height) {
 				xheights[x] = h;
 			}
 
+			// Only draw the part of the slice (if any) that is visible (wasn't previously rendered)
 			if (h < xheights[x]) {
 				off = xheights[x] * width + x;
 
