@@ -18,6 +18,7 @@ Display.loadImage('heightmap.png', function (img) {
 
 	polygon.setTexture(Display.dataFromImage(img));
 
+	// Make the terrain palette
 	palette = Display.makePaletteForGradients(
 		{
 			pure_blue: [0, 0, 255],
@@ -71,50 +72,6 @@ Display.loadImage('heightmap.png', function (img) {
 	loop();
 });
 
-// Render loop
-var vel = 0.5, accel = 0;
-
-function loop (time)
-{
-	display.clearScreen();
-
-	// polygon.renderEdges(Display.rgba(255, 255, 255));
-	// polygon.renderGradient();
-	// polygon.renderTexture();
-	polygon.renderHeightmap();
-
-	polygon.rotation += vel;
-
-	// // Input - disabled
-	// if (key == 'left') {
-	// 	polygon.rotation -= 1;
-	// }
-	// else if (key == 'right') {
-	// 	polygon.rotation += 1;
-	// }
-
-	// if (key == 'up') {
-	// 	polygon.zoom += 0.02;
-	// 	if (polygon.zoom > 3) {
-	// 		polygon.zoom = 3;
-	// 	}
-	// }
-	// else if (key == 'down') {
-	// 	polygon.zoom -= 0.02;
-	// 	if (polygon.zoom < 1) {
-	// 		polygon.zoom = 1;
-	// 	}
-	// }
-
-	// Speed up and slow down spinning
-	// accel = Math.sin(display.frame * Math.PI / 180) / 64;
-	// vel += accel;
-
-	display.advanceFrame(time);
-	display.blitScreen();
-	requestAnimationFrame(loop);
-}
-
 // Keyboard controls - currently unused, but can uncomment input code in render loop to control directly
 var key = null;
 
@@ -135,4 +92,44 @@ document.onkeydown = function (event) {
 
 document.onkeyup = function (event) {
 	key = null;
+}
+
+// Render loop
+var vel = 0.5;
+
+function loop (time)
+{
+	display.clearScreen();
+
+	// polygon.renderEdges(Display.rgba(255, 255, 255));
+	// polygon.renderGradient();
+	// polygon.renderTexture();
+	polygon.renderHeightmap();
+
+	polygon.rotation += vel;
+
+	// Input (instead of auto-rotate above)
+	// if (key == 'left') {
+	// 	polygon.rotation -= 1;
+	// }
+	// else if (key == 'right') {
+	// 	polygon.rotation += 1;
+	// }
+
+	// if (key == 'up') {
+	// 	polygon.zoom += 0.02;
+	// 	if (polygon.zoom > 3) {
+	// 		polygon.zoom = 3;
+	// 	}
+	// }
+	// else if (key == 'down') {
+	// 	polygon.zoom -= 0.02;
+	// 	if (polygon.zoom < 1) {
+	// 		polygon.zoom = 1;
+	// 	}
+	// }
+
+	display.blitScreen();
+	display.advanceFrame(time);
+	requestAnimationFrame(loop);
 }
