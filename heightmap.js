@@ -15,7 +15,7 @@ function HeightmapPolygon (vertices, options)
 	}
 }
 
-HeightmapPolygon.prototype.renderHeightMap = function ()
+HeightmapPolygon.prototype.renderHeightmap = function ()
 {
 	var x, y, off;
 	var u, udelta;
