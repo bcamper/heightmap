@@ -2,7 +2,8 @@
 
 var display = new Display(560, 560); // 700, 700
 
-var polygon = Polygon.Factory.nSided(6, 225, { texture: { width: 256, height: 256 } }); // 300
+// var polygon = Polygon.Factory.nSided(6, 225, { texture: { width: 256, height: 256 } }); // 300
+var polygon = new HeightmapPolygon(Polygon.Factory.verticesForNSided(6, 225, { texture: { width: 256, height: 256 } })); // 300
 polygon.position = Point(0, 50);
 
 // Gradient the vertices - unused in heightmap demo, but can use with polygon.renderGradient()
