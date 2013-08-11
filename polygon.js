@@ -292,7 +292,7 @@ Polygon.prototype.renderTexture = function ()
 };
 
 // TODO: heightmap-specific, move to subclass?
-Polygon.prototype.renderHeightMap = function ()
+Polygon.prototype.renderHeightmap = function ()
 {
 	var x, y, off;
 	var u, udelta;

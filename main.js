@@ -81,7 +81,7 @@ function loop (time)
 	// polygon.renderEdges(Display.rgba(255, 255, 255));
 	// polygon.renderGradient();
 	// polygon.renderTexture();
-	polygon.renderHeightMap();
+	polygon.renderHeightmap();
 
 	polygon.rotation += vel;
 
