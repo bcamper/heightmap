@@ -133,6 +133,26 @@ Polygon.prototype.rasterize = function (property_keys, transform, edge)
 		function rasterizeTraceEdges (p, properties, edge) {
 			var left, right, k;
 
+            // TODO: get min/max by detecting top/bottom vertices directly
+            if (this.ymin == null || p.y < this.ymin) {
+                this.ymin = p.y;
+            }
+
+            if (this.ymax == null || p.y > this.ymax) {
+                this.ymax = p.y;
+            }
+
+            // Clip
+            if (this.ymin < 0) {
+                this.ymin = 0;
+                return;
+            }
+            else if (this.ymax >= this.display.height) {
+                this.ymax = this.display.height - 1;
+                return;
+            }
+
+            // Track edge x coordinates and properties
 			if (edge == 'left' || edge == 'both') {
 				left = this.left_edges[p.y];
 				if (left == -1 || p.x < left) {
@@ -153,26 +173,9 @@ Polygon.prototype.rasterize = function (property_keys, transform, edge)
 					}
 				}
 			}
-
-			// TODO: get min/max by detecting top/bottom vertices directly
-			if (this.ymin == null || p.y < this.ymin) {
-				this.ymin = p.y;
-			}
-
-			if (this.ymax == null || p.y > this.ymax) {
-				this.ymax = p.y;
-			}
 		},
 		property_keys
 	);
-
-	// Clip
-	if (this.ymin < 0) {
-		this.ymin = 0;
-	}
-	else if (this.ymax >= this.display.height) {
-		this.ymax = this.display.height - 1;
-	}
 
 	// Pre-compute raster property deltas
 	for (y = this.ymin; y <= this.ymax; y++) {
