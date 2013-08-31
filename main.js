@@ -14,7 +14,7 @@ polygon.vertices.forEach(function (vertex, p) {
 });
 
 // Load texture/heightmap and configured
-Display.loadImage('heightmap.png', function (img) { 
+Display.loadImage('heightmap.png', function (img) {
 	var palette, p, c;
 
 	polygon.setTexture(Display.dataFromImage(img));
@@ -98,9 +98,24 @@ document.onkeyup = function (event) {
 // Render loop
 var vel = 0.5;
 
+display.context.globalCompositeOperation = 'copy';
+
 function loop (time)
 {
-	display.clearScreen();
+    var c = display.context;
+
+	// display.clearScreen();
+    c.clearRect(0, 0, display.width, display.height);
+    // c.fillStyle = 'rgba(0, 0, 0, 1.0)';
+    // c.fillRect(0, 0, display.width, display.height);
+
+    // Debug: red line for canvas draw comparison
+    // c.beginPath();
+    // c.moveTo(25, 0);
+    // c.lineTo(25, display.height);
+    // c.strokeStyle = 'rgba(255, 0, 0, 1.0)';
+    // c.lineWidth = 1.0;
+    // c.stroke();
 
 	// polygon.renderEdges(Display.rgba(255, 255, 255));
 	// polygon.renderGradient();
@@ -130,7 +145,7 @@ function loop (time)
 	// 	}
 	// }
 
-	display.blitScreen();
+	// display.blitScreen();
 	display.advanceFrame(time);
 	requestAnimationFrame(loop);
 }

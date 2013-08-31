@@ -84,12 +84,21 @@ HeightmapPolygon.prototype.renderHeightmap = function ()
 
 			// Only draw the part of the slice (if any) that is visible (wasn't previously rendered)
 			if (h < xheights[x]) {
-				off = xheights[x] * width + x;
+				// off = xheights[x] * width + x;
 
-				for (z = xheights[x]; z >= h; z --) {
-					pixels[off] = t | (255 << 24);
-					off -= width;
-				}
+				// for (z = xheights[x]; z >= h; z --) {
+				// 	pixels[off] = t | (255 << 24);
+				// 	off -= width;
+				// }
+
+                var c = this.display.context;
+                c.beginPath();
+                c.moveTo(x, xheights[x]);
+                c.lineTo(x, h);
+                c.strokeStyle = 'rgba(' + [t & 255, (t >> 8) & 255, (t >> 16) & 255].join(', ') + ', 1.0)';
+                c.lineWidth = 2;
+                // c.globalCompositeOperation = 'copy';
+                c.stroke();
 
 				xheights[x] = h;
 			}
