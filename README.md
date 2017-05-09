@@ -3,7 +3,7 @@ heightmap
 
 A heightmap software rendering demo on HTML canvas.
 
-Demo: http://vector.io/heightmap/
+Demo: https://bcamper.github.io/heightmap/
 
 This is a software renderer (direct pixel rendering, no WebGL, etc.) of a terrain heightmap, bearing some resemblance to the 90s-era demoscene and DOS games like Magic Carpet. 
 It works by mapping a 2D image onto a polygon, then treating the intensity values of the image as heights that are extruded up from the polygon's surface.
