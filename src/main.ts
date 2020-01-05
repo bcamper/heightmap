@@ -1,21 +1,29 @@
-"use strict";
+import Display from './display';
+import Point from './point';
+import Polygon from './polygon';
+import HeightmapPolygon from './heightmap';
 
-var display = new Display(560, 560); // 700, 700
+const canvas = document.getElementById('canvas') as HTMLCanvasElement;
+const pixelRatio = 1; //window.devicePixelRatio;
+const display = new Display(560, 560, canvas, { pixelRatio }); // 700, 700
 
-// var polygon = Polygon.Factory.nSided(6, 225, { texture: { width: 256, height: 256 } }); // 300
-var polygon = new HeightmapPolygon(Polygon.Factory.verticesForNSided(6, 225, { texture: { width: 256, height: 256 } })); // 300
-polygon.position = Point(0, 50);
+const polygonSize = 225 * pixelRatio;
+const polygon = new HeightmapPolygon(Polygon.vertexesForNSided(6, polygonSize, { texture: { width: 256, height: 256 } }), display); // 300
+// const polygon = new Polygon(Polygon.vertexesForNSided(6, 225, { texture: { width: 256, height: 256 } }), display); // 300
+polygon.position = new Point(0, 50);
 
-// Gradient the vertices - unused in heightmap demo, but can use with polygon.renderGradient()
-polygon.vertices.forEach(function (vertex, p) {
-	vertex.r = p * 256 / polygon.vertices.length + 0;
-	vertex.g = ((p + polygon.vertices.length / 3) % polygon.vertices.length) * 256 / polygon.vertices.length + 0;
-	vertex.b = ((p + polygon.vertices.length * 2 / 3) % polygon.vertices.length) * 256 / polygon.vertices.length + 0;
+// Gradient the vertexes - unused in heightmap demo, but can use with polygon.renderGradient()
+polygon.vertexes.forEach(function (vertex, p: number) {
+	vertex.r = p * 256 / polygon.vertexes.length + 0;
+	vertex.g = ((p + polygon.vertexes.length / 3) % polygon.vertexes.length) * 256 / polygon.vertexes.length + 0;
+	vertex.b = ((p + polygon.vertexes.length * 2 / 3) % polygon.vertexes.length) * 256 / polygon.vertexes.length + 0;
 });
 
-// Load texture/heightmap and configured
-Display.loadImage('heightmap.png', function (img) { 
-	var palette, p, c;
+	// Load texture/heightmap and configured
+(async () => {
+	const img: HTMLImageElement = await Display.loadImage('../heightmap.png');
+
+	let palette, p, c;
 
 	polygon.setTexture(Display.dataFromImage(img));
 
@@ -71,10 +79,10 @@ Display.loadImage('heightmap.png', function (img) {
 
 	// Start rendering
 	loop();
-});
+})();
 
 // Keyboard controls - currently unused, but can uncomment input code in render loop to control directly
-var key = null;
+let key = null;
 
 document.onkeydown = function (event) {
 	if (event.keyCode == 37) {
@@ -96,14 +104,13 @@ document.onkeyup = function (event) {
 }
 
 // Render loop
-var vel = 0.5;
+let vel = 0.5;
 
-function loop (time)
-{
+function loop (time: number = (+new Date())) {
 	display.clearScreen();
 
-	// polygon.renderEdges(Display.rgba(255, 255, 255));
 	// polygon.renderGradient();
+	// polygon.renderEdges(Display.rgba(255, 255, 255));
 	// polygon.renderTexture();
 	polygon.renderHeightmap();
 

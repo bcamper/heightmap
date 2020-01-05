@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "allowJs": true,
+    "target": "es2015",
+    // "lib": "ES2015.Generator",
+    "module": "es6",
+    "noImplicitAny": true,
+    "sourceMap": true
+  },
+  "include": [
+    "./src/**/*"
+  ]
+}
