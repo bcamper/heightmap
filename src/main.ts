@@ -21,7 +21,7 @@ polygon.vertexes.forEach(function (vertex, p: number) {
 
 // Load texture/heightmap and configured
 (async () => {
-  const img: HTMLImageElement = await Display.loadImage('../heightmap.png');
+  const img: HTMLImageElement = await Display.loadImage('heightmap.png');
 
   let palette, p, c;
 
